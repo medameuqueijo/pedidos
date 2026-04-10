@@ -65,13 +65,39 @@
         .product-card { background: #fff; position: relative; overflow: hidden; display: flex; border: 1px solid #d2b48c; border-radius: 4px; }
         .product-card img.main-thumb { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1 / 1; display: block; cursor: zoom-in; }
 
+        /* ESTILO PARA PRODUTO SEM ESTOQUE */
+        .product-card.out-of-stock {
+            filter: grayscale(0.5);
+        }
+        .product-card.out-of-stock .main-thumb {
+            opacity: 0.5;
+        }
+        .product-card.out-of-stock::after {
+            content: "SEM ESTOQUE";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            padding: 5px 15px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            z-index: 20;
+            pointer-events: none;
+            white-space: nowrap;
+            border: 2px solid white;
+        }
+        .product-card.out-of-stock .card-actions-right {
+            display: none; /* Esconde botões de compra se não houver estoque */
+        }
+
         .card-actions-left { position: absolute; top: 6px; left: 6px; z-index: 10; }
-        
         .card-actions-right { 
             position: absolute; top: 6px; right: 6px; 
             display: flex; flex-direction: row-reverse; 
-            gap: 2px; 
-            z-index: 10; align-items: center; 
+            gap: 2px; z-index: 10; align-items: center; 
         }
 
         .btn-zoom {
@@ -87,22 +113,11 @@
             display: flex; align-items: center; justify-content: center; color: var(--primary); cursor: pointer;
         }
 
-        /* ÍCONE PLUS NA PONTA SUPERIOR DIREITA */
         .icon-plus-top {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            width: 14px;
-            height: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-            border: 1px solid white;
+            position: absolute; top: 4px; right: 4px; background: var(--primary);
+            color: white; border-radius: 50%; width: 14px; height: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; border: 1px solid white;
         }
 
         .item-count-badge {
@@ -205,16 +220,16 @@
     <script>
         const TEL_LOJA = "5531994558208"; 
         const dadosProdutos = [
-            { "id": 1, "nome": "Queijo Minas da Roça", "preco": "R$40,00",      "visivel": true, "imagens": ["./img/roca.png?w=800", "./img/roca.png?w=800&q=2"] },
-            { "id": 2, "nome": "Queijo Minas Frescal", "preco": "R$25,00",      "visivel": false, "imagens": ["./img/frescal.png?w=800", "./img/frescal.png?w=800&q=2"] },
-            { "id": 5, "nome": "Requeijão Branco", "preco": "R$40,00",          "visivel": true, "imagens": ["./img/requeijao.png?w=800", "./img/requeijao.png?w=800&q=2"] },
-            { "id": 6, "nome": "Requeijão Raspa", "preco": "R$40,00",           "visivel": true, "imagens": ["./img/raspa.png?w=800", "./img/raspa.png?w=800&q=2"] },
-            { "id": 7, "nome": "Trancinha Mussarela", "preco": "R$40,00",       "visivel": false, "imagens": ["./img/trancinha.png?w=800", "./img/trancinha.png?w=800&q=2"] },
-            { "id": 8, "nome": "Doce de Leite Pote", "preco": "R$22,00",        "visivel": false, "imagens": ["./img/doce.png?w=800", "./img/doce.png?w=800&q=2"] },
-            { "id": 3, "nome": "Padrão Suaçuí - Meia Lua", "preco": "R$38,00",  "visivel": true, "imagens": ["./img/suacui-ml.png?w=800", "./img/suacui-ml.png?w=800&q=2"] },
-            { "id": 4, "nome": "Padrão Suaçuí - Inteiro", "preco": "R$70,00",   "visivel": false, "imagens": ["./img/suacui.png?w=800", "./img/suacui.png?w=800&q=2"] },
-            { "id": 9, "nome": "Parmesão 4 Sabores", "preco": "R$50,00",        "visivel": false, "imagens": ["./img/4sabores.png?w=800", "./img/4sabores.png?w=800&q=2"] },
-            { "id": 10, "nome": "Provolone", "preco": "R$40,00",                "visivel": false, "imagens": ["./img/provolone.webp?w=800", "./img/provolone.webp?w=800&q=2"] }
+            { "id": 1, "nome": "Queijo Minas da Roça", "preco": "R$40,00", "visivel": true, "imagens": ["./img/roca.png", "./img/roca.png?q=2"] },
+            { "id": 2, "nome": "Queijo Minas Frescal", "preco": "R$25,00", "visivel": false, "imagens": ["./img/frescal.png", "./img/frescal.png?q=2"] },
+            { "id": 5, "nome": "Requeijão Branco", "preco": "R$40,00", "visivel": true, "imagens": ["./img/requeijao.png", "./img/requeijao.png?q=2"] },
+            { "id": 6, "nome": "Requeijão Raspa", "preco": "R$40,00", "visivel": true, "imagens": ["./img/raspa.png", "./img/raspa.png?q=2"] },
+            { "id": 7, "nome": "Trancinha Mussarela", "preco": "R$40,00", "visivel": false, "imagens": ["./img/trancinha.png", "./img/trancinha.png?q=2"] },
+            { "id": 8, "nome": "Doce de Leite Pote", "preco": "R$22,00", "visivel": false, "imagens": ["./img/doce.png", "./img/doce.png?q=2"] },
+            { "id": 3, "nome": "Padrão Suaçuí - Meia Lua", "preco": "R$38,00", "visivel": true, "imagens": ["./img/suacui-ml.png", "./img/suacui-ml.png?q=2"] },
+            { "id": 4, "nome": "Padrão Suaçuí - Inteiro", "preco": "R$70,00", "visivel": false, "imagens": ["./img/suacui.png", "./img/suacui.png?q=2"] },
+            { "id": 9, "nome": "Parmesão 4 Sabores", "preco": "R$50,00", "visivel": false, "imagens": ["./img/4sabores.png", "./img/4sabores.png?q=2"] },
+            { "id": 10, "nome": "Provolone", "preco": "R$40,00", "visivel": false, "imagens": ["./img/provolone.webp", "./img/provolone.webp?q=2"] }
         ];
 
         let carrinho = {};
@@ -258,6 +273,9 @@
         };
 
         function mudarQuantidade(id, delta) {
+            const produto = dadosProdutos.find(p => p.id == id);
+            if (!produto.visivel && delta > 0) return; // Bloqueia adição se sem estoque
+
             carrinho[id] = (carrinho[id] || 0) + delta;
             if (carrinho[id] <= 0) delete carrinho[id];
             atualizarInterface(id);
@@ -326,8 +344,9 @@
 
         function carregarCatalogo() {
             const container = document.getElementById('catalogo');
-            container.innerHTML = dadosProdutos.filter(p => p.visivel).map(item => `
-                <div class="product-card">
+            // Nota: agora mapeamos TODOS os produtos, sem filtrar o visivel
+            container.innerHTML = dadosProdutos.map(item => `
+                <div class="product-card ${item.visivel ? '' : 'out-of-stock'}">
                     <div class="card-actions-left">
                         <button class="btn-zoom" onclick="abrirGaleria('${item.id}')">
                             <i data-lucide="zoom-in" style="width: 16px; height: 16px;" stroke-width="1.5"></i>
